@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ApiGateway.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ApiGateway.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AuthorizationServer.main.iml" filepath="$PROJECT_DIR$/.idea/modules/AuthorizationServer.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GraduateWork.iml" filepath="$PROJECT_DIR$/GraduateWork.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ResourceServer.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ResourceServer.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/net.quazar.ApiGateway.main.iml" filepath="$PROJECT_DIR$/.idea/modules/net.quazar.ApiGateway.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/net.quazar.AuthorizationServer.main.iml" filepath="$PROJECT_DIR$/.idea/modules/net.quazar.AuthorizationServer.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/net.quazar.ResourceServer.main.iml" filepath="$PROJECT_DIR$/.idea/modules/net.quazar.ResourceServer.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/net.quazar.telegram.main.iml" filepath="$PROJECT_DIR$/.idea/modules/net.quazar.telegram.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/telegram.main.iml" filepath="$PROJECT_DIR$/.idea/modules/telegram.main.iml" />
+    </modules>
+  </component>
+</project>
