@@ -5,7 +5,9 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "telegram_users")
@@ -18,11 +20,15 @@ import java.util.List;
 public class TelegramUser {
     private @Id Long telegramId;
     private @Column(nullable = false) LocalDateTime subscriptionDate;
-    @ElementCollection
-    private List<String> permissions = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "telegram_user_roles",
+            joinColumns = @JoinColumn(name = "telegram_user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
     @ManyToMany
     @JoinTable(name = "subscribed_categories",
-            joinColumns = @JoinColumn(name = "user_id"),
+            joinColumns = @JoinColumn(name = "telegram_user_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private List<AnnouncementCategory> categories = new ArrayList<>();
+    private Set<AnnouncementCategory> categories = new HashSet<>();
+    private int state = 0;
 }
