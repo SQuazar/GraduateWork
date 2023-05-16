@@ -14,8 +14,9 @@ import java.util.List;
 @ToString(exclude = "users")
 @EqualsAndHashCode(exclude = "users")
 public class AnnouncementCategory {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private @Id Integer id;
-    private @Column(nullable = false) String name;
+    private @Column(nullable = false, unique = true) String name;
     @ManyToMany(mappedBy = "categories")
     private List<TelegramUser> users = new ArrayList<>();
 }
