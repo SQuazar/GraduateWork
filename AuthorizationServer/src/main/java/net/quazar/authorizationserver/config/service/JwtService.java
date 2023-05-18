@@ -47,8 +47,6 @@ public class JwtService {
                                 UserDetails details, long expiration) {
         return Jwts.builder()
                 .setClaims(extraClaims)
-                .claim("authorities", details.getAuthorities().stream().map(GrantedAuthority::getAuthority)
-                        .filter(Objects::nonNull).toList())
                 .setSubject(details.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(
