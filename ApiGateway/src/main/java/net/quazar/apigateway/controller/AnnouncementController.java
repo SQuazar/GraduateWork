@@ -1,7 +1,7 @@
 package net.quazar.apigateway.controller;
 
 import lombok.AllArgsConstructor;
-import net.quazar.apigateway.auth.entity.AnnouncementDto;
+import net.quazar.apigateway.proxy.resource.AnnouncementDto;
 import net.quazar.apigateway.proxy.ResourceServerProxy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
