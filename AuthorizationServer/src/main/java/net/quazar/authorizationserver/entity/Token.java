@@ -24,6 +24,7 @@ public class Token {
     private long expire;
 
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private TokenType type = TokenType.ACCESS;
 
     @ToString.Exclude
