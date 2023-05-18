@@ -3,6 +3,7 @@ package net.quazar.resourceserver.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,4 +33,19 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     @Column(name = "permission")
     private Set<String> permissions = new HashSet<>();
+
+    public Set<String> getAuthorities() {
+        Set<String> authorities = new HashSet<>();
+        authorities.addAll(permissions);
+        authorities.addAll(roles
+                .stream()
+                .map(Role::getPermissions)
+                .flatMap(Collection::stream)
+                .toList());
+        authorities.addAll(roles
+                .stream()
+                .map(role -> "ROLE_" + role.getName())
+                .toList());
+        return authorities;
+    }
 }
