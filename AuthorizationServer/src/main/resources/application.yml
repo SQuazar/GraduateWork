@@ -13,6 +13,8 @@ spring:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
+  mvc:
+    log-resolved-exception: false
 eureka:
   client:
     service-url:
