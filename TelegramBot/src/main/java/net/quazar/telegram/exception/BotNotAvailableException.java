@@ -3,7 +3,7 @@ package net.quazar.telegram.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+@ResponseStatus(HttpStatus.LOCKED)
 public class BotNotAvailableException extends RuntimeException {
     public BotNotAvailableException() {
     }
