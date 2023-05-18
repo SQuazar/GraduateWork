@@ -1,4 +1,4 @@
-package net.quazar.apigateway.auth.entity;
+package net.quazar.apigateway.proxy.resource;
 
 import lombok.Builder;
 import lombok.Data;
