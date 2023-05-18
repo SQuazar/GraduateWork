@@ -1,6 +1,8 @@
 spring:
   application:
     name: api-gateway
+  mvc:
+    log-resolved-exception: false
 eureka:
   client:
     service-url:
