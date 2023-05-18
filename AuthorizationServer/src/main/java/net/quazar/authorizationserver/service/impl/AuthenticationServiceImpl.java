@@ -63,6 +63,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (StringUtils.isEmpty(refreshToken))
             throw new InvalidTokenException("Неверный токен");
         Token tokenEntity = tokenService.getByToken(refreshToken);
+        if (tokenEntity.getType() != Token.TokenType.REFRESH)
+            throw new InvalidTokenException("Неверный токен");
         if (tokenEntity.isRevoked())
             throw new TokenRevokeException("Данный токен был отозван");
         if (jwtService.isTokenExpired(refreshToken))
