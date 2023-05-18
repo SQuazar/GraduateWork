@@ -9,6 +9,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  mvc:
+    log-resolved-exception: false
 eureka:
   client:
     service-url:
