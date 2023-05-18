@@ -1,8 +1,8 @@
 package net.quazar.authorizationserver.service.impl;
 
-import com.ctc.wstx.shaded.msv_core.datatype.xsd.TokenType;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import net.quazar.authorizationserver.config.service.JwtService;
 import net.quazar.authorizationserver.entity.Token;
 import net.quazar.authorizationserver.entity.User;
 import net.quazar.authorizationserver.exception.TokenNotFoundException;
@@ -17,11 +17,13 @@ import java.util.List;
 @Service
 public class TokenServiceImpl implements TokenService {
     private final TokenRepository repository;
+    private final JwtService jwtService;
 
     @Override
     public Token saveToken(@NonNull String token, @NonNull User user) {
         return repository.save(Token.builder()
                 .token(token)
+                .expire(jwtService.extractClaim(token, claims -> claims.getExpiration().getTime()))
                 .user(user)
                 .build());
     }
@@ -30,6 +32,7 @@ public class TokenServiceImpl implements TokenService {
     public Token saveToken(@NonNull String token, @NonNull Token.TokenType type, @NonNull User user) {
         return repository.save(Token.builder()
                 .token(token)
+                .expire(jwtService.extractClaim(token, claims -> claims.getExpiration().getTime()))
                 .type(type)
                 .user(user)
                 .build());
