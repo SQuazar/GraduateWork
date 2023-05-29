@@ -7,6 +7,7 @@ import net.quazar.apigateway.entity.ApiError;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 
 public class ApiGatewayErrorDecoder implements ErrorDecoder {
     private final ErrorDecoder errorDecoder = new Default();
@@ -29,9 +30,13 @@ public class ApiGatewayErrorDecoder implements ErrorDecoder {
                         apiError.getTimestamp());
                 case 404 -> new NotFoundException(apiError.getMessage() != null ? apiError.getMessage() : "Not found",
                         apiError.getTimestamp());
+                case 423 -> new LockedException(apiError.getMessage() != null ? apiError.getMessage() : "Locked",
+                        apiError.getTimestamp());
                 default -> errorDecoder.decode(methodKey, response);
             };
         }
+        if (response.status() == 503)
+            return new ServiceUnavailableException("Service Unavailable", LocalDateTime.now().toString());
         return errorDecoder.decode(methodKey, response);
     }
 }
