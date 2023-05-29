@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @AllArgsConstructor
 @RestController
@@ -18,6 +20,11 @@ public class RoleController {
     @GetMapping
     public ResponseEntity<List<RoleDto>> getAllRoles() {
         return ResponseEntity.ok(roleService.getAll());
+    }
+
+    @GetMapping("/by")
+    public ResponseEntity<List<RoleDto>> getAllRolesBy(@RequestParam Optional<List<Integer>> ids) {
+        return ResponseEntity.ok(roleService.getAllByIds(ids.orElse(List.of())));
     }
 
     @GetMapping("/{id}")
@@ -35,14 +42,19 @@ public class RoleController {
         return ResponseEntity.ok(roleService.getUsers(id));
     }
 
-    @PostMapping
+    @GetMapping("/{id}/authorities")
+    public ResponseEntity<Set<String>> getRoleAuthorities(@PathVariable int id) {
+        return ResponseEntity.ok(roleService.getAuthorities(id));
+    }
+
+    @PutMapping
     public ResponseEntity<RoleDto> createRole(@RequestParam String name) {
-        return ResponseEntity.ok(roleService.save(RoleDto.builder()
+        return ResponseEntity.ok(roleService.create(RoleDto.builder()
                 .name(name)
                 .build()));
     }
 
-    @PatchMapping("/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<RoleDto> updateRole(@PathVariable int id, @RequestBody RoleDto roleDto) {
         roleDto.setId(id);
         return ResponseEntity.ok(roleService.save(roleDto));
