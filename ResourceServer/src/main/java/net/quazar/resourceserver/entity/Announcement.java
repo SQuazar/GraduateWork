@@ -1,7 +1,10 @@
 package net.quazar.resourceserver.entity;
 
 import jakarta.persistence.*;
+import jakarta.ws.rs.DefaultValue;
 import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -15,4 +18,16 @@ public class Announcement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private @Id Integer id;
     private @Lob String text;
+    @Builder.Default
+    private LocalDateTime timestamp = LocalDateTime.now();
+    @OneToOne
+    private User sender;
+    @Builder.Default
+    @Column(nullable = false)
+    @DefaultValue("''")
+    private String categories = "";
+    @Builder.Default
+    @Column(nullable = false)
+    @DefaultValue("''")
+    private String roles = "";
 }
