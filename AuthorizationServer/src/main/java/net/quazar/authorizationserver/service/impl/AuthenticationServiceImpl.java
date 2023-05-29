@@ -52,7 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var refresh = tokenService.saveToken(refreshToken, Token.TokenType.REFRESH, user);
         return AuthenticationResponse.builder()
                 .message("Успешный вход")
-                .token(access.getToken())
+                .accessToken(access.getToken())
                 .refreshToken(refresh.getToken())
                 .build();
     }
@@ -81,7 +81,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var access = tokenService.saveToken(accessToken, user);
         var refresh = tokenService.saveToken(refreshToken, Token.TokenType.REFRESH, user);
         return TokenResponse.builder()
-                .token(access.getToken())
+                .accessToken(access.getToken())
                 .refreshToken(refresh.getToken())
                 .build();
     }
