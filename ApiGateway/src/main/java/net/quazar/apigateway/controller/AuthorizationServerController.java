@@ -3,6 +3,7 @@ package net.quazar.apigateway.controller;
 import lombok.AllArgsConstructor;
 import net.quazar.apigateway.proxy.AuthorizationServerProxy;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
@@ -24,6 +25,11 @@ public class AuthorizationServerController {
     @PostMapping("/verifyToken")
     public AuthorizationServerProxy.VerifyTokenResponse verifyToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
         return authorizationServerProxy.verifyToken(authorization);
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<?> check() {
+        return ResponseEntity.ok().build();
     }
 
 }
