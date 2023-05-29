@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 @FeignClient(name = "resource-server")
 public interface ResourceServerProxy {
@@ -43,7 +42,7 @@ public interface ResourceServerProxy {
     record ChangeStateResponse(@JsonProperty("user_id") long userId, int state) {
     }
 
-    record CategoryResponse(@JsonProperty("category_id") int id, @JsonProperty("category_name") String name) {
+    record CategoryResponse(int id, String name) {
     }
 
     @GetMapping("/telegram/users/category/{categoryId}/ids")
