@@ -1,6 +1,5 @@
 package net.quazar.apigateway.proxy;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,10 +17,10 @@ public interface AuthorizationServerProxy {
     @PostMapping("/verifyToken")
     VerifyTokenResponse verifyToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization);
 
-    record AuthenticationResponse(String message, String token, @JsonProperty("refresh_token") String refreshToken) {
+    record AuthenticationResponse(String message, String accessToken, String refreshToken) {
     }
 
-    record TokenResponse(String token, @JsonProperty("refresh_token") String refreshToken) {
+    record TokenResponse(String accessToken, String refreshToken) {
     }
 
     record VerifyTokenResponse(String message) {
