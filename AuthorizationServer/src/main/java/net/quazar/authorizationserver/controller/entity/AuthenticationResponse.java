@@ -1,6 +1,5 @@
 package net.quazar.authorizationserver.controller.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,7 +7,6 @@ import lombok.Data;
 @Builder
 public class AuthenticationResponse {
     private String message;
-    private String token;
-    @JsonProperty("refresh_token")
+    private String accessToken;
     private String refreshToken;
 }
