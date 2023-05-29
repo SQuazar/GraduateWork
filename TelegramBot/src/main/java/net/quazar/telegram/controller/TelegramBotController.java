@@ -6,6 +6,7 @@ import lombok.Data;
 import net.quazar.telegram.bot.AnnouncementsBot;
 import net.quazar.telegram.exception.BotNotAvailableException;
 import net.quazar.telegram.service.AnnouncementsDeliveryService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,14 @@ public class TelegramBotController {
         deliveryService.startSendingAnnouncement(request.text, request.categoryId, request.rolesIds);
     }
 
+    @GetMapping("/state")
+    public BotStateResponse getState() {
+        return switch (AnnouncementsBot.getBotState()) {
+            case AVAILABLE -> new BotStateResponse(200, "Бот доступен для рассылки");
+            case SENDING_ANNOUNCEMENTS -> new BotStateResponse(423, "В данный момент бот занят рассылкой новостей");
+        };
+    }
+
     @Data
     public static final class SendAnnouncementsRequest {
         private final String text;
@@ -33,5 +42,8 @@ public class TelegramBotController {
         private final int categoryId;
         @JsonProperty("roles")
         private final Set<Integer> rolesIds = new HashSet<>();
+    }
+
+    public record BotStateResponse(int code, String message) {
     }
 }
