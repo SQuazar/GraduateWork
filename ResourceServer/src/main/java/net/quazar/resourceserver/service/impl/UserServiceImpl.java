@@ -2,6 +2,7 @@ package net.quazar.resourceserver.service.impl;
 
 import lombok.AllArgsConstructor;
 import net.quazar.resourceserver.entity.User;
+import net.quazar.resourceserver.entity.UserAlreadyExistsException;
 import net.quazar.resourceserver.entity.dto.RoleDto;
 import net.quazar.resourceserver.entity.dto.UserDto;
 import net.quazar.resourceserver.exception.UserNotFoundException;
@@ -11,8 +12,10 @@ import net.quazar.resourceserver.repository.RoleRepository;
 import net.quazar.resourceserver.repository.UserRepository;
 import net.quazar.resourceserver.service.UserService;
 import org.springframework.lang.NonNull;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -23,6 +26,8 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final UserDtoMapper userDtoMapper = UserDtoMapper.INSTANCE;
     private final RoleDtoMapper roleDtoMapper = RoleDtoMapper.INSTANCE;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDto getById(int userId) {
@@ -62,8 +67,43 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Set<String> getPermissions(int userId) {
+        return userRepository.findById(userId)
+                .map(User::getPermissions)
+                .orElseThrow(() -> new UserNotFoundException("Пользователь с ID %d не найден".formatted(userId)));
+    }
+
+    @Override
     public UserDto save(@NonNull UserDto entity) {
         return userDtoMapper.userToDto(userRepository.save(userDtoMapper.dtoToUser(entity)));
+    }
+
+    @Override
+    public UserDto update(int userId, String username, String password, List<Integer> roles, List<String> permissions) {
+        userRepository.findByUsername(username).ifPresent((res) -> {
+            if (res.getId() != userId)
+                throw new UserAlreadyExistsException("Пользователь %s уже существует".formatted(username));
+        });
+        var find = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("Пользователь с ID %d не найден".formatted(userId)));
+        find.setUsername(username);
+        if (!password.isEmpty())
+            find.setPasswordHash(passwordEncoder.encode(password));
+        permissions.remove("");
+        find.setRoles(new HashSet<>(roleRepository.findAllById(roles)));
+        find.setPermissions(new HashSet<>(permissions));
+        return userDtoMapper.userToDto(userRepository.save(find));
+    }
+
+    @Override
+    public UserDto createUser(String username, String password) {
+        userRepository.findByUsername(username).ifPresent((res) -> {
+            throw new UserAlreadyExistsException("Пользователь %s уже существует".formatted(username));
+        });
+        return userDtoMapper.userToDto(userRepository.save(User.builder()
+                .username(username)
+                .passwordHash(passwordEncoder.encode(password))
+                .build()));
     }
 
     @Override
