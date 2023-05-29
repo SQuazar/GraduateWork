@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -81,8 +82,8 @@ public class TelegramSubscriptionController {
     }
 
     @GetMapping("/categories")
-    public ResponseEntity<List<CategoryResponse>> getCategories() {
-        return ResponseEntity.ok(categoryService.getAll()
+    public ResponseEntity<List<CategoryResponse>> getCategories(@RequestParam Optional<List<Integer>> ids) {
+        return ResponseEntity.ok((ids.isPresent() ? categoryService.getAllByIds(ids.get()) : categoryService.getAll())
                 .stream()
                 .map(category -> CategoryResponse.builder()
                         .id(category.getId())
@@ -112,7 +113,7 @@ public class TelegramSubscriptionController {
     @Data
     @Builder
     static class CategoryResponse {
-        private @JsonProperty("category_id") int id;
-        private @JsonProperty("category_name") String name;
+        private int id;
+        private String name;
     }
 }
