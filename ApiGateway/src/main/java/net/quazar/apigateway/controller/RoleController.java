@@ -15,7 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class RoleController {
     private final ResourceServerProxy resourceServerProxy;
 
-    @PreAuthorize("hasAuthority('roles.get')")
+    @PreAuthorize("hasAnyAuthority('roles.get', 'telegram.announcements.roles')")
     @GetMapping
     public ResponseEntity<ApiResponse> getAllRoles() {
         return ResponseEntity.ok(ApiResponse.builder()
@@ -51,8 +51,18 @@ public class RoleController {
                 .build());
     }
 
+    @PreAuthorize("hasAuthority('roles.get')")
+    @GetMapping("/{id}/authorities")
+    public ResponseEntity<ApiResponse> getAuthorities(@PathVariable int id) {
+        return ResponseEntity.ok(ApiResponse.builder()
+                .code(200)
+                .response(resourceServerProxy.getRoleAuthorities(id))
+                .build()
+        );
+    }
+
     @PreAuthorize("hasAuthority('roles.create')")
-    @PostMapping
+    @PutMapping
     public ResponseEntity<ApiResponse> createRole(@RequestParam String name) {
         var role = resourceServerProxy.createRole(name);
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
@@ -67,7 +77,7 @@ public class RoleController {
     }
 
     @PreAuthorize("hasAuthority('roles.update')")
-    @PatchMapping("/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<ApiResponse> updateRole(@PathVariable int id, @RequestBody RoleRequest roleDto) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .code(200)
