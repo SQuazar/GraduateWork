@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -31,4 +29,5 @@ public class TelegramUser {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<AnnouncementCategory> categories = new HashSet<>();
     private int state = 0;
+    private String signature;
 }
