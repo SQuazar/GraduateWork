@@ -1,6 +1,7 @@
 package net.quazar.apigateway.config.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.RetryableException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,7 +10,9 @@ import lombok.AllArgsConstructor;
 import net.quazar.apigateway.config.service.JwtService;
 import net.quazar.apigateway.entity.ApiError;
 import net.quazar.apigateway.exception.NotFoundException;
+import net.quazar.apigateway.exception.ServiceUnavailableException;
 import net.quazar.apigateway.exception.jwt.InvalidTokenException;
+import net.quazar.apigateway.exception.jwt.TokenExpiredException;
 import net.quazar.apigateway.exception.jwt.TokenRevokedException;
 import net.quazar.apigateway.proxy.ResourceServerProxy;
 import net.quazar.apigateway.proxy.resource.TokenResponse;
@@ -46,15 +49,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             token = resourceServerProxy.getToken(jwt);
             if (!jwt.equals(token.token())) throw new InvalidTokenException("Invalid token", LocalDateTime.now().toString());
-            if (token.revoked()) throw new TokenRevokedException("Token is revoked", LocalDateTime.now().toString());
-        } catch (NotFoundException e) {
-            filterChain.doFilter(request, response);
-            return;
-        } catch (InvalidTokenException | TokenRevokedException e) {
+            if (token.revoked()) throw new TokenRevokedException("Токен был отозван", LocalDateTime.now().toString());
+            if (token.expire() < System.currentTimeMillis()) throw new TokenExpiredException("Срок действия токена истёк", LocalDateTime.now().toString());
+        } catch (InvalidTokenException | TokenRevokedException | TokenExpiredException | NotFoundException e) {
             ApiError error = ApiError.builder()
                     .status(401)
                     .timestamp(e.getTimestamp())
                     .message(e.getMessage())
+                    .build();
+            response.setStatus(error.getStatus());
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write(mapper.writeValueAsString(error));
+            return;
+        } catch (RetryableException | ServiceUnavailableException e) {
+            ApiError error = ApiError.builder()
+                    .status(503)
+                    .timestamp(LocalDateTime.now().toString())
+                    .message("Сервис недоступен")
                     .build();
             response.setStatus(error.getStatus());
             response.setCharacterEncoding("UTF-8");
@@ -70,7 +82,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 user = resourceServerProxy.getUserByUsername(username);
             } catch (NotFoundException e) {
                 ApiError error = ApiError.builder()
-                        .status(404)
+                        .status(401)
                         .timestamp(e.getTimestamp())
                         .message(e.getMessage())
                         .build();
