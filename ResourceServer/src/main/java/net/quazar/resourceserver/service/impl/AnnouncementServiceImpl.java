@@ -6,6 +6,7 @@ import net.quazar.resourceserver.exception.UserNotFoundException;
 import net.quazar.resourceserver.repository.AnnouncementRepository;
 import net.quazar.resourceserver.repository.UserRepository;
 import net.quazar.resourceserver.service.AnnouncementService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,6 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
     @Override
     public List<Announcement> getAll() {
-        return announcementRepository.findAll();
+        return announcementRepository.findAll(Sort.by(Sort.Direction.DESC, "timestamp"));
     }
 }
