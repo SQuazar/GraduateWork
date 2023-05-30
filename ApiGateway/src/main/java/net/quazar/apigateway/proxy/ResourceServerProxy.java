@@ -70,7 +70,7 @@ public interface ResourceServerProxy {
     @PostMapping("/users/{id}")
     UserResponse updateUser(@PathVariable int id, @RequestBody UpdateUserRequest request);
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/users/{id}")
     void deleteUser(@PathVariable int id);
 
     @GetMapping("/tokens/{token}")
