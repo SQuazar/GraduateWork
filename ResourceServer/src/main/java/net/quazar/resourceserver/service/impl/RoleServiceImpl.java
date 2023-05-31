@@ -22,7 +22,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Service
 public class RoleServiceImpl implements RoleService {
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final RoleDtoMapper roleDtoMapper = RoleDtoMapper.INSTANCE;
