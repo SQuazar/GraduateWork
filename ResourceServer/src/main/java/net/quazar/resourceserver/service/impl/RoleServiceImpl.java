@@ -10,8 +10,6 @@ import net.quazar.resourceserver.mapper.UserDtoMapper;
 import net.quazar.resourceserver.repository.RoleRepository;
 import net.quazar.resourceserver.repository.UserRepository;
 import net.quazar.resourceserver.service.RoleService;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
