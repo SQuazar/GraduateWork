@@ -1,7 +1,7 @@
 package net.quazar.authorizationserver.controller;
 
 import lombok.AllArgsConstructor;
-import net.quazar.authorizationserver.controller.entity.AuthenticationResponse;
+import net.quazar.authorizationserver.controller.entity.AuthorizationResponse;
 import net.quazar.authorizationserver.controller.entity.TokenResponse;
 import net.quazar.authorizationserver.service.AuthenticationService;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ public class AuthorizationServerController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<AuthorizationResponse> login(@RequestParam String username, @RequestParam String password) {
         return ResponseEntity.ok(authenticationService.login(username, password));
     }
 

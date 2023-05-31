@@ -3,7 +3,7 @@ package net.quazar.authorizationserver.service.impl;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import net.quazar.authorizationserver.config.service.JwtService;
-import net.quazar.authorizationserver.controller.entity.AuthenticationResponse;
+import net.quazar.authorizationserver.controller.entity.AuthorizationResponse;
 import net.quazar.authorizationserver.controller.entity.TokenResponse;
 import net.quazar.authorizationserver.controller.entity.VerifyTokenResponse;
 import net.quazar.authorizationserver.entity.Token;
@@ -34,7 +34,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Transactional
     @Override
-    public AuthenticationResponse login(@NonNull String username, @NonNull String password) {
+    public AuthorizationResponse login(@NonNull String username, @NonNull String password) {
         var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         User user = (User) auth.getPrincipal();
         var refreshTokens = tokenService.getByUser(user).stream()
@@ -50,7 +50,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String refreshToken = jwtService.generateRefreshToken(user);
         var access = tokenService.saveToken(accessToken, user);
         var refresh = tokenService.saveToken(refreshToken, Token.TokenType.REFRESH, user);
-        return AuthenticationResponse.builder()
+        return AuthorizationResponse.builder()
                 .message("Успешный вход")
                 .accessToken(access.getToken())
                 .refreshToken(refresh.getToken())
