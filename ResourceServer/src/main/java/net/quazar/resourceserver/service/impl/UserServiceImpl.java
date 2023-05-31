@@ -2,7 +2,7 @@ package net.quazar.resourceserver.service.impl;
 
 import lombok.AllArgsConstructor;
 import net.quazar.resourceserver.entity.User;
-import net.quazar.resourceserver.entity.UserAlreadyExistsException;
+import net.quazar.resourceserver.exception.UserAlreadyExistsException;
 import net.quazar.resourceserver.entity.dto.RoleDto;
 import net.quazar.resourceserver.entity.dto.UserDto;
 import net.quazar.resourceserver.exception.UserNotFoundException;
