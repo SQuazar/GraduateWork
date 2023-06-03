@@ -1,4 +1,4 @@
-package net.quazar.telegram.bot.handler.impl;
+package net.quazar.telegram.bot.handler.state;
 
 import feign.FeignException;
 import net.quazar.telegram.bot.Keyboards;

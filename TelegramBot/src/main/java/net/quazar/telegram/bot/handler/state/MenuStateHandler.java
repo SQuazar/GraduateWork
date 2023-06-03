@@ -1,4 +1,4 @@
-package net.quazar.telegram.bot.handler.impl;
+package net.quazar.telegram.bot.handler.state;
 
 import net.quazar.telegram.bot.Keyboards;
 import net.quazar.telegram.bot.commands.MySubscriptionCommand;

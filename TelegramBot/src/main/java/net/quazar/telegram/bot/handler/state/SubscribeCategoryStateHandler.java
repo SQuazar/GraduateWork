@@ -1,11 +1,11 @@
-package net.quazar.telegram.bot.handler.impl;
+package net.quazar.telegram.bot.handler.state;
 
 import feign.FeignException;
 import lombok.AllArgsConstructor;
 import net.quazar.telegram.bot.Keyboards;
 import net.quazar.telegram.bot.commands.CategoriesCommand;
+import net.quazar.telegram.bot.commands.SubscribeCategoryCommand;
 import net.quazar.telegram.bot.commands.TextCommands;
-import net.quazar.telegram.bot.commands.UnsubscribeCategoryCommand;
 import net.quazar.telegram.bot.handler.StateHandler;
 import net.quazar.telegram.proxy.ResourceServerProxy;
 import org.slf4j.Logger;
@@ -17,9 +17,9 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @AllArgsConstructor
-@StateHandler.Handler(state = StateHandler.State.CATEGORY_UNSUBSCRIBE)
-public class UnsubscribeCategoryStateHandler implements StateHandler {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UnsubscribeCategoryStateHandler.class);
+@StateHandler.Handler(state = StateHandler.State.CATEGORY_SUBSCRIBE)
+public class SubscribeCategoryStateHandler implements StateHandler {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SubscribeCategoryStateHandler.class);
 
     private final ResourceServerProxy resourceServerProxy;
 
@@ -48,17 +48,17 @@ public class UnsubscribeCategoryStateHandler implements StateHandler {
             return State.CATEGORIES_EDIT;
         }
 
-        if (message.getText().equals(TextCommands.RemoveCategoryCommands.DONE)) {
+        if (message.getText().equals(TextCommands.AddCategoryCommands.DONE)) {
             return new CategoriesCommand(subscription).execute(update, absSender);
         }
 
         try {
-            ResourceServerProxy.CategoryResponse category = resourceServerProxy.unsubscribeCategory(subscription.userId(), message.getText())
+            ResourceServerProxy.CategoryResponse category = resourceServerProxy.subscribeCategory(subscription.userId(), message.getText())
                     .getBody();
-            subscription.categories().remove(category.name());
+            subscription.categories().add(category.name());
             SendMessage sendMessage = SendMessage.builder()
                     .chatId(message.getFrom().getId())
-                    .text("Вы отписались от категории " + message.getText())
+                    .text("Вы подписались на категорию " + message.getText())
                     .build();
             absSender.execute(sendMessage);
         } catch (FeignException.NotFound e) {
@@ -69,6 +69,6 @@ public class UnsubscribeCategoryStateHandler implements StateHandler {
             absSender.execute(sendMessage);
         }
 
-        return new UnsubscribeCategoryCommand(resourceServerProxy, subscription).execute(update, absSender);
+        return new SubscribeCategoryCommand(resourceServerProxy, subscription).execute(update, absSender);
     }
 }
