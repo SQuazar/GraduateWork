@@ -1,9 +1,12 @@
 package net.quazar.telegram.bot;
 
 import feign.FeignException;
+import net.quazar.telegram.bot.handler.CallbackDataHandler;
+import net.quazar.telegram.bot.handler.registry.CallbackDataHandlerRegistry;
 import net.quazar.telegram.bot.handler.registry.impl.AnnouncementBotStateHandlerRegistry;
 import net.quazar.telegram.bot.handler.StateHandler;
 import net.quazar.telegram.bot.handler.registry.StateHandlerRegistry;
+import net.quazar.telegram.bot.handler.registry.impl.CallbackDataHandlerRegistryImpl;
 import net.quazar.telegram.proxy.ResourceServerProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +15,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
@@ -23,12 +27,14 @@ public class AnnouncementsBot extends TelegramLongPollingBot {
     @Value("${bot.username}")
     private String username;
     private final StateHandlerRegistry stateHandlerRegistry;
+    private final CallbackDataHandlerRegistry callbackDataHandlerRegistry;
     private final ResourceServerProxy resourceServerProxy;
 
     public AnnouncementsBot(@Value("${bot.token}") String token,
                             ResourceServerProxy resourceServerProxy) {
         super(token);
         this.stateHandlerRegistry = new AnnouncementBotStateHandlerRegistry();
+        this.callbackDataHandlerRegistry = new CallbackDataHandlerRegistryImpl();
         this.resourceServerProxy = resourceServerProxy;
     }
 
@@ -39,6 +45,27 @@ public class AnnouncementsBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        if (update.hasCallbackQuery()) {
+            CallbackQuery query = update.getCallbackQuery();
+            String callback = query.getData();
+            var handlers = callbackDataHandlerRegistry.getHandlers(callback);
+            if (handlers != null) {
+                for (CallbackDataHandler handler : handlers)
+                    handler.handle(update, query, this);
+            } else {
+                SendMessage sendMessage = SendMessage.builder()
+                        .chatId(update.getMessage().getChatId())
+                        .text("Ошибка. Недействительная кнопка")
+                        .replyMarkup(Keyboards.getKeyboardByState(StateHandler.State.MENU))
+                        .build();
+                try {
+                    sendApiMethod(sendMessage);
+                } catch (TelegramApiException e) {
+                    LOGGER.warn("Cannot execute api method", e);
+                }
+                return;
+            }
+        }
         if (!update.hasMessage()) return;
         if (!update.getMessage().hasText()) return;
         int state;
@@ -122,6 +149,10 @@ public class AnnouncementsBot extends TelegramLongPollingBot {
 
     public StateHandlerRegistry getStateHandlerRegistry() {
         return stateHandlerRegistry;
+    }
+
+    public CallbackDataHandlerRegistry getCallbackDataHandlerRegistry() {
+        return callbackDataHandlerRegistry;
     }
 
     private static BotState state = BotState.AVAILABLE;
