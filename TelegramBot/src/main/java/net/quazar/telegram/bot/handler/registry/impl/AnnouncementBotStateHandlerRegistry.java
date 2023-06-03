@@ -1,4 +1,4 @@
-package net.quazar.telegram.bot.handler.impl;
+package net.quazar.telegram.bot.handler.registry.impl;
 
 import net.quazar.telegram.bot.handler.StateHandler;
 import net.quazar.telegram.bot.handler.registry.StateHandlerRegistry;
