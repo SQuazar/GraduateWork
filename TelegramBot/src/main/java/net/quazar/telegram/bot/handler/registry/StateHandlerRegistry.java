@@ -1,5 +1,6 @@
-package net.quazar.telegram.bot.handler;
+package net.quazar.telegram.bot.handler.registry;
 
+import net.quazar.telegram.bot.handler.StateHandler;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
