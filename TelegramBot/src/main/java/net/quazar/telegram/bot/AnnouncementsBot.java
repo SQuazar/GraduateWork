@@ -1,7 +1,7 @@
 package net.quazar.telegram.bot;
 
 import feign.FeignException;
-import net.quazar.telegram.bot.handler.AnnouncementBotStateHandlerRegistry;
+import net.quazar.telegram.bot.handler.impl.AnnouncementBotStateHandlerRegistry;
 import net.quazar.telegram.bot.handler.StateHandler;
 import net.quazar.telegram.bot.handler.StateHandlerRegistry;
 import net.quazar.telegram.proxy.ResourceServerProxy;

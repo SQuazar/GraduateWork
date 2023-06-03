@@ -1,12 +1,12 @@
-package net.quazar.telegram.bot.handler;
+package net.quazar.telegram.bot.handler.impl;
 
 import feign.FeignException;
-import lombok.AllArgsConstructor;
 import net.quazar.telegram.bot.Keyboards;
 import net.quazar.telegram.bot.commands.MySubscriptionCommand;
 import net.quazar.telegram.bot.commands.SubscribeCategoryCommand;
 import net.quazar.telegram.bot.commands.TextCommands;
 import net.quazar.telegram.bot.commands.UnsubscribeCategoryCommand;
+import net.quazar.telegram.bot.handler.StateHandler;
 import net.quazar.telegram.proxy.ResourceServerProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,14 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @StateHandler.Handler(state = StateHandler.State.CATEGORIES_EDIT)
 public class CategoriesEditStateHandler implements StateHandler {

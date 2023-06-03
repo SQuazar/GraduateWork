@@ -1,4 +1,4 @@
-package net.quazar.telegram.bot.handler;
+package net.quazar.telegram.bot.handler.impl;
 
 import feign.FeignException;
 import lombok.AllArgsConstructor;
@@ -6,6 +6,7 @@ import net.quazar.telegram.bot.Keyboards;
 import net.quazar.telegram.bot.commands.CategoriesCommand;
 import net.quazar.telegram.bot.commands.TextCommands;
 import net.quazar.telegram.bot.commands.UnsubscribeCategoryCommand;
+import net.quazar.telegram.bot.handler.StateHandler;
 import net.quazar.telegram.proxy.ResourceServerProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

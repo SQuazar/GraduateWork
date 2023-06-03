@@ -1,8 +1,9 @@
-package net.quazar.telegram.bot.handler;
+package net.quazar.telegram.bot.handler.impl;
 
 import net.quazar.telegram.bot.Keyboards;
 import net.quazar.telegram.bot.commands.MySubscriptionCommand;
 import net.quazar.telegram.bot.commands.TextCommands;
+import net.quazar.telegram.bot.handler.StateHandler;
 import net.quazar.telegram.proxy.ResourceServerProxy;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
