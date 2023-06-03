@@ -2,7 +2,6 @@ package net.quazar.apigateway.proxy;
 
 import net.quazar.apigateway.proxy.resource.*;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,14 +10,6 @@ import java.util.Set;
 
 @FeignClient(name = "resource-server")
 public interface ResourceServerProxy {
-    @PostMapping("/announcements")
-    AnnouncementResponse saveAnnouncement(@RequestParam String text, @RequestParam int sender,
-                                          @RequestParam List<String> categories,
-                                          @RequestParam List<String> roles);
-
-    @GetMapping("/announcements")
-    List<AnnouncementResponse> getAllAnnouncements();
-
     @GetMapping("/roles")
     List<RoleResponse> getAllRoles();
 
@@ -131,4 +122,13 @@ public interface ResourceServerProxy {
 
     @PutMapping("/categories")
     CategoryResponse createCategory(@RequestParam String name);
+
+    @PostMapping("/announcements")
+    AnnouncementResponse saveAnnouncement(@RequestParam String text, @RequestParam int sender,
+                                          @RequestParam List<String> categories,
+                                          @RequestParam List<String> roles);
+
+    @GetMapping("/announcements")
+    List<AnnouncementResponse> getAllAnnouncements();
+
 }
