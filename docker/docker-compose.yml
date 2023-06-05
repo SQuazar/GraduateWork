@@ -1,0 +1,74 @@
+version: '3.9'
+
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: graduatepass
+      MYSQL_DATABASE: main
+    volumes:
+      - mysql-data:/var/lib/mysql
+  eureka:
+    build: ./eureka
+    restart: always
+  resource-server:
+    build: ./resource-server
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: main
+      DB_USER: root
+      DB_PASSWORD: graduatepass
+      EUREKA_HOST: eureka
+      EUREKA_PORT: 8761
+    depends_on:
+      - db
+      - eureka
+  authorization-server:
+    build: ./authorization-server
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: main
+      DB_USER: root
+      DB_PASSWORD: graduatepass
+      EUREKA_HOST: eureka
+      EUREKA_PORT: 8761
+    depends_on:
+      - resource-server
+  telegram-bot:
+    build: ./telegram-bot
+    restart: always
+    environment:
+      BOT_TOKEN: 6233828931:AAF6SLlmd-z0tdZCO6YFCleY1wxPXQMeQ-g
+      EUREKA_HOST: eureka
+      EUREKA_PORT: 8761
+    depends_on:
+      - resource-server
+  api:
+    build: ./api
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_HOST: eureka
+      EUREKA_PORT: 8761
+    depends_on:
+      - resource-server
+      - authorization-server
+      - telegram-bot
+  frontend:
+    build: ./frontend
+    restart: always
+    ports:
+      - "80:3000"
+    environment:
+      API_URL: http://api:8080
+    links:
+      - api
+
+volumes:
+  mysql-data:

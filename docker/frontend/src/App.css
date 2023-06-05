@@ -1,0 +1,60 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+iframe {
+    display: none;
+}
+
+.login-form {
+    scale: 1.2;
+}
+
+.logout-button {
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    bottom: 2%;
+    right: 0;
+    left: 0;
+    position: absolute;
+}
+
+.editable-row .ant-form-item-explain {
+    position: absolute;
+    top: 100%;
+    font-size: 12px;
+}
+
+.loading {
+    margin: 20px 0;
+    padding: 30px 50px;
+    text-align: center;
+}
+
+.demo-logo-vertical {
+    height: 32px;
+    margin: 16px;
+    background: rgba(255,255,255,.2);
+    border-radius: 6px;
+    text-align: center;
+    color: white;
+}
+
+.dynamic-delete-button {
+    position: relative;
+    top: 4px;
+    margin: 0 8px;
+    color: #999;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.dynamic-delete-button:hover {
+    color: #777;
+}
+.dynamic-delete-button[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
