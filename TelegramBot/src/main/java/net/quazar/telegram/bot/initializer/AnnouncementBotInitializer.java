@@ -38,7 +38,7 @@ public class AnnouncementBotInitializer implements InitializingBean {
                         callbackDataHandler.getClass().getName(), CallbackDataHandler.Handler.class.getName());
                 continue;
             }
-            for (String callbackData : handlerAnnotation.c())
+            for (String callbackData : handlerAnnotation.callbackData())
                 announcementsBot.getCallbackDataHandlerRegistry().register(callbackData, callbackDataHandler);
         }
     }
