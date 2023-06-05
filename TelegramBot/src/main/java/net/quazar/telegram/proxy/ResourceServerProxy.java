@@ -25,11 +25,11 @@ public interface ResourceServerProxy {
     @PostMapping("/telegram/subscribe/{id}/state/{state}")
     ResponseEntity<ChangeStateResponse> changeState(@PathVariable long id, @PathVariable int state);
 
-    @PostMapping("/telegram/subscribe/{id}/category/{categoryName}")
-    ResponseEntity<CategoryResponse> subscribeCategory(@PathVariable long id, @PathVariable String categoryName);
+    @PostMapping("/telegram/subscribe/{id}/category/{categoryId}")
+    ResponseEntity<CategoryResponse> subscribeCategory(@PathVariable long id, @PathVariable int categoryId);
 
-    @DeleteMapping("/telegram/subscribe/{id}/category/{categoryName}")
-    ResponseEntity<CategoryResponse> unsubscribeCategory(@PathVariable long id, @PathVariable String categoryName);
+    @DeleteMapping("/telegram/subscribe/{id}/category/{categoryId}")
+    ResponseEntity<CategoryResponse> unsubscribeCategory(@PathVariable long id, @PathVariable int categoryId);
 
     @GetMapping("/telegram/subscribe/categories")
     ResponseEntity<List<CategoryResponse>> getCategories();

@@ -1,6 +1,7 @@
 package net.quazar.telegram.bot.config;
 
 import net.quazar.telegram.bot.AnnouncementsBot;
+import net.quazar.telegram.bot.handler.CallbackDataHandler;
 import net.quazar.telegram.bot.handler.StateHandler;
 import net.quazar.telegram.bot.initializer.AnnouncementBotInitializer;
 import org.springframework.beans.factory.ObjectProvider;
@@ -18,8 +19,12 @@ public class AnnouncementBotStarterConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public AnnouncementBotInitializer botInitializer(AnnouncementsBot announcementsBot, ObjectProvider<List<StateHandler>> stateHandlers) {
-        return new AnnouncementBotInitializer(announcementsBot, stateHandlers.getIfAvailable(Collections::emptyList));
+    public AnnouncementBotInitializer botInitializer(AnnouncementsBot announcementsBot,
+                                                     ObjectProvider<List<StateHandler>> stateHandlers,
+                                                     ObjectProvider<List<CallbackDataHandler>> callbackDataHandlers) {
+        return new AnnouncementBotInitializer(announcementsBot,
+                stateHandlers.getIfAvailable(Collections::emptyList),
+                callbackDataHandlers.getIfAvailable(Collections::emptyList));
     }
 
 }

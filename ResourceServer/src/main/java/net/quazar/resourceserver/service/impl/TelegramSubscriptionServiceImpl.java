@@ -49,10 +49,10 @@ public class TelegramSubscriptionServiceImpl implements TelegramSubscriptionServ
 
     @Transactional
     @Override
-    public AnnouncementCategory subscribeCategory(long id, String categoryName) {
+    public AnnouncementCategory subscribeCategory(long id, int categoryId) {
         var user = getSubscription(id);
-        var category = categoryRepository.findByName(categoryName).orElseThrow(() ->
-                new AnnouncementCategoryNotFound("Category " + categoryName + " isn't found"));
+        var category = categoryRepository.findById(categoryId).orElseThrow(() ->
+                new AnnouncementCategoryNotFound("Category " + categoryId + " isn't found"));
         user.getCategories().add(category);
         telegramUserRepository.save(user);
         return category;
@@ -60,10 +60,10 @@ public class TelegramSubscriptionServiceImpl implements TelegramSubscriptionServ
 
     @Transactional
     @Override
-    public AnnouncementCategory unsubscribeCategory(long id, String categoryName) {
+    public AnnouncementCategory unsubscribeCategory(long id, int categoryId) {
         var user = getSubscription(id);
-        var category = categoryRepository.findByName(categoryName).orElseThrow(() ->
-                new AnnouncementCategoryNotFound("Category " + categoryName + " isn't found"));
+        var category = categoryRepository.findById(categoryId).orElseThrow(() ->
+                new AnnouncementCategoryNotFound("Category " + categoryId + " isn't found"));
         user.getCategories().remove(category);
         telegramUserRepository.save(user);
         return category;

@@ -1,9 +1,10 @@
-package net.quazar.telegram.bot.handler;
+package net.quazar.telegram.bot.handler.state;
 
 import net.quazar.telegram.bot.Keyboards;
 import net.quazar.telegram.bot.commands.SubscribeCommand;
 import net.quazar.telegram.bot.commands.TextCommands;
-import net.quazar.telegram.proxy.ResourceServerProxy;
+import net.quazar.telegram.bot.handler.StateHandler;
+import net.quazar.telegram.bot.service.SubscriptionService;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -14,8 +15,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class StartStateHandler implements StateHandler {
     private final SubscribeCommand subscribeCommand;
 
-    public StartStateHandler(ResourceServerProxy resourceServerProxy) {
-        this.subscribeCommand = new SubscribeCommand(resourceServerProxy);
+    public StartStateHandler(SubscriptionService subscriptionService) {
+        this.subscribeCommand = new SubscribeCommand(subscriptionService);
     }
 
     @Override
@@ -30,6 +31,6 @@ public class StartStateHandler implements StateHandler {
             absSender.execute(sendMessage);
             return State.START;
         }
-        return subscribeCommand.execute(update, absSender);
+        return subscribeCommand.execute(update, message.getFrom().getId(), absSender);
     }
 }
