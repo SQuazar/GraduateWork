@@ -8,7 +8,9 @@ public interface BotCommand {
     /**
      * Выполняет команду бота
      * @param update обновление Telegram
+     * @param chatId id чата
+     * @param absSender бот
      * @return новое состояние
      */
-    int execute(Update update, AbsSender absSender) throws TelegramApiException;
+    int execute(Update update, long chatId, AbsSender absSender) throws TelegramApiException;
 }
