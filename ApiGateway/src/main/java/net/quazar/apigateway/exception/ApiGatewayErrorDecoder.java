@@ -28,6 +28,8 @@ public class ApiGatewayErrorDecoder implements ErrorDecoder {
                         apiError.getTimestamp());
                 case 401 -> new UnauthorizedException(apiError.getMessage() != null ? apiError.getMessage() : "Unauthorized",
                         apiError.getTimestamp());
+                case 403 -> new BadUserCredentialsException(apiError.getMessage() != null ? apiError.getMessage() : "Bad Credentials",
+                        apiError.getTimestamp());
                 case 404 -> new NotFoundException(apiError.getMessage() != null ? apiError.getMessage() : "Not found",
                         apiError.getTimestamp());
                 case 423 -> new LockedException(apiError.getMessage() != null ? apiError.getMessage() : "Locked",
