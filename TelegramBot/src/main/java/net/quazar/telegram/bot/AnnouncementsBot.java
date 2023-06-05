@@ -92,12 +92,14 @@ public class AnnouncementsBot extends TelegramLongPollingBot {
                     handler.handle(update, query, this);
                 } catch (SubscriptionNotFoundException e) {
                     SendMessage sendMessage = SendMessage.builder()
+                            .chatId(query.getMessage().getChatId())
                             .text(e.getMessage())
                             .replyMarkup(Keyboards.getKeyboardByState(StateHandler.State.START))
                             .build();
                     sendApiMethod(sendMessage);
                 } catch (SomethingIsWrongException e) {
                     SendMessage sendMessage = SendMessage.builder()
+                            .chatId(query.getMessage().getChatId())
                             .text(e.getMessage())
                             .replyMarkup(Keyboards.getKeyboardByState(StateHandler.State.MENU))
                             .build();
