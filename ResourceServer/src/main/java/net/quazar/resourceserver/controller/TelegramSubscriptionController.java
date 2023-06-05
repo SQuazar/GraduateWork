@@ -63,18 +63,18 @@ public class TelegramSubscriptionController {
                 .build());
     }
 
-    @PostMapping("/{id}/category/{categoryName}")
-    public ResponseEntity<CategoryResponse> subscribeCategory(@PathVariable long id, @PathVariable String categoryName) {
-        var category = subscriptionService.subscribeCategory(id, categoryName);
+    @PostMapping("/{id}/category/{categoryId}")
+    public ResponseEntity<CategoryResponse> subscribeCategory(@PathVariable long id, @PathVariable int categoryId) {
+        var category = subscriptionService.subscribeCategory(id, categoryId);
         return ResponseEntity.ok(CategoryResponse.builder()
                 .id(category.getId())
                 .name(category.getName())
                 .build());
     }
 
-    @DeleteMapping("/{id}/category/{categoryName}")
-    public ResponseEntity<CategoryResponse> unsubscribeCategory(@PathVariable long id, @PathVariable String categoryName) {
-        var category = subscriptionService.unsubscribeCategory(id, categoryName);
+    @DeleteMapping("/{id}/category/{categoryId}")
+    public ResponseEntity<CategoryResponse> unsubscribeCategory(@PathVariable long id, @PathVariable int categoryId) {
+        var category = subscriptionService.unsubscribeCategory(id, categoryId);
         return ResponseEntity.ok(CategoryResponse.builder()
                 .id(category.getId())
                 .name(category.getName())

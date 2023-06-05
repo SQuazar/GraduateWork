@@ -8,6 +8,6 @@ public interface TelegramSubscriptionService {
     void unsubscribe(long id);
     TelegramUser getSubscription(long id);
     TelegramUser changeState(long id, int state);
-    AnnouncementCategory subscribeCategory(long id, String categoryName);
-    AnnouncementCategory unsubscribeCategory(long id, String categoryName);
+    AnnouncementCategory subscribeCategory(long id, int categoryId);
+    AnnouncementCategory unsubscribeCategory(long id, int categoryId);
 }
