@@ -29,6 +29,7 @@ public class CallbackDataHandlerRegistryImpl implements CallbackDataHandlerRegis
 
     @Override
     public List<CallbackDataHandler> getHandlers(String callbackData) {
+        callbackData = callbackData.replaceAll("[^A-Za-z]+$", "");
         return this.handlersMap.get(callbackData);
     }
 }
