@@ -27,11 +27,29 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         try {
             return resourceServerProxy.getSubscription(userId).getBody();
         } catch (FeignException.NotFound e) {
-            bot.changeSubscriberState(userId, StateHandler.State.START);
             throw new SubscriptionNotFoundException("Подписка не найдена");
         } catch (FeignException e) {
             LOGGER.warn("{} Cannot get user subscription from resource server: {}", e.status(), e.contentUTF8());
             bot.changeSubscriberState(userId, StateHandler.State.MENU);
+            throw new SomethingIsWrongException("Что-то пошло не так");
+        }
+    }
+
+    @Override
+    public boolean hasSubscription(long userId) {
+        try {
+            return getSubscription(userId) != null;
+        } catch (SubscriptionNotFoundException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public void subscribe(long userId) {
+        try {
+            resourceServerProxy.subscribe(userId);
+        } catch (FeignException e) {
+            LOGGER.warn("{} Не удалось оформить новостную подписку: {}", e.status(), e.contentUTF8());
             throw new SomethingIsWrongException("Что-то пошло не так");
         }
     }
