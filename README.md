@@ -22,8 +22,8 @@ INSERT INTO main.users (id, password_hash, username) VALUES (1, '$2a$05$86i/aBAe
 INSERT INTO main.users (id, password_hash, username) VALUES (2, '$2a$10$TVx.ETuM6sOgGyg8u7RPj.VbNaL9BpLfPV/c/KjTHiS/oT8T94.9i', 'user');
 
 # Создание групп
-INSERT INTO main.roles (id, name) VALUES (1, 'Администратор');
-INSERT INTO main.roles (id, name) VALUES (2, 'Управляющий ботом');
+INSERT INTO main.roles (id, name) VALUES (1, 'Admin');
+INSERT INTO main.roles (id, name) VALUES (2, 'Manager');
 
 # Выдача полномочий группам
 INSERT INTO main.role_permissions (role_id, permission) VALUES (1, 'roles.get');
