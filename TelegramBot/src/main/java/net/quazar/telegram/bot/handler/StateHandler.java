@@ -22,10 +22,6 @@ public interface StateHandler {
     class State {
         public static final int START = 0;
         public static final int MENU = 1;
-        public static final int MY_SUBSCRIPTION = 2;
-        public static final int CATEGORIES_EDIT = 3;
-        public static final int CATEGORY_SUBSCRIBE = 4;
-        public static final int CATEGORY_UNSUBSCRIBE = 5;
     }
 
     @Component
